@@ -35,8 +35,20 @@ p{
     border-color: red;
 }
 
+
+
 .oculto {
     background-color: blue;
     border-color: blue
 }
 
+.reset {
+    background-color: #ff9604;
+    border-color: #ff9604;
+    margin: 1em;
+    width: 5em;
+    height: 2em;
+    border-radius: .75rem;
+    text-align: center;
+    padding-top: 1em;
+}
