@@ -2,6 +2,7 @@ h1{
     font-size: 5em;
     text-align: center;
 }
+
 p{
     margin-top: 2em;
     margin-bottom: 3em;
@@ -21,20 +22,21 @@ p{
     border-radius: .75rem;
 }
 
-.oculto {
-    background-color: red;
-    border-color: red;
-}
 
-
-#carta1:hover, #carta3:hover, .girada#carta1, .girada#carta3{
+/* #carta1:hover, #carta3:hover, .girada#carta1, .girada#carta3, */
+.verde{
     background-color: green;
     border-color: green;
 }
 
-#carta2:hover, #carta4:hover, .girada#carta2, .girada#carta4{
+
+.rojo {
+    background-color: red;
+    border-color: red;
+}
+
+.oculto {
     background-color: blue;
     border-color: blue
 }
-
 
