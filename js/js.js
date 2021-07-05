@@ -1,62 +1,82 @@
-const CARTASTOTALES = 4;
-var carta1, carta2;
+window.onload = function() 
+{
+    const cartasTotales= 4;
+    var carta1= undefined;
+    var carta2= undefined;
+    var parejasTotales= cartasTotales / 2;
 
-function girar() {
-  let element = document.getElementById(event.target.id);
-  if (carta1 == undefined){
-    carta1 = element
-  }
-  else if (carta2 == undefined){
-    carta2 = element
-  }
-  //resetMe(element)
-  element.classList.remove("oculto");
-  element.classList.add("girada");
+    function girar() 
+    {
+        let element = document.getElementById(event.target.id);
+        
+        if (carta1 == undefined)
+        {
+            carta1 = element
+        }
 
-  if (!(carta1 == undefined) && !(carta2 == undefined)){
-    //si son pareja...
-    if ((carta1.classList.contains("rojo") && carta2.classList.contains("rojo"))
-    ||
-    (carta1.classList.contains("verde") && carta2.classList.contains("verde"))){
-      console.log("una pareja");
+        else if (carta2 == undefined)
+        {
+            carta2 = element
+        }
+        //ocultarCarta(element)
+        element.classList.remove("oculto");
+
+        //si son pareja...
+        if (!(carta1 == undefined) && !(carta2 == undefined) && !(carta1===carta2)){
+            if ((carta1.classList.contains("rojo") && carta2.classList.contains("rojo"))
+            ||
+            (carta1.classList.contains("verde") && carta2.classList.contains("verde"))){
+                console.log("una pareja");
+                parejasTotales--;
+                if (parejasTotales <=0){
+                    alert("Has ganado");
+                    reiniciar();
+                }
+            }
+            else{
+                ocultarCarta(carta1);
+                ocultarCarta(carta2);
+            }
+
+            carta1 = undefined;
+            carta2 = undefined;
+            
+        }
     }
-    else{
-      resetMe(carta1);
-      resetMe(carta2);
+
+    function ocultarCarta(carta) 
+    {
+        carta.classList.add("oculto");
+        // carta.classList.remove("girada");
     }
 
-    carta1 = undefined;
-    carta2 = undefined;
-    
-  }
-}
+    function reiniciar() 
+    {
 
-function resetMe(carta) {
-  carta.classList.add("oculto");
-  carta.classList.remove("girada");
-}
+        let lista = Array.from({length: cartasTotales}, (x,i) => i++ ); //[1, 2, 3, 4];
+        parejasTotales = cartasTotales/2
+        aleatorios = Array.from({length: cartasTotales/2}, aleatorio => {
+            aleatorioTemp = Math.floor(Math.random() * lista.length)
+            return lista.splice(aleatorioTemp ,1)[0]
+        })
 
-function reiniciar() {
-
-  let lista = Array.from({length: CARTASTOTALES}, (x,i) => 1+i); //[1, 2, 3, 4];
-  let rojo;
-
-  let aleatorio;
-
-  for (let index = 0; index < CARTASTOTALES/2 ; index++) {
-    aleatorio  = Math.floor(Math.random() * lista.length)
-    rojo = lista.splice(aleatorio, 1) 
-    let element = document.getElementById("carta"+rojo);
-    element.classList.remove("verde");//.add("rojo")
-    element.classList.add("rojo");
-    resetMe(element)
-  }
-
-  lista.forEach(element => {
-    let elemento = document.getElementById("carta"+element);
-    elemento.classList.remove("rojo");
-    elemento.classList.add("verde");
-    resetMe(elemento)
-  });
-
+        let cartas = Array.from(document.getElementsByClassName('cuadro')).forEach((cuadro, i) => 
+        {
+            if (aleatorios.includes(i))
+            {
+                cuadro.classList.add("rojo")
+                cuadro.classList.remove("verde")
+            }
+            else
+            {
+                cuadro.classList.add("verde")
+                cuadro.classList.remove("rojo")
+            }
+            cuadro.classList.add("oculto")
+            cuadro.onclick = function(){
+                girar()
+            }
+        })
+    }
+    reiniciar()
 }
