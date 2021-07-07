@@ -5,6 +5,18 @@ window.onload = function()
     var carta2= undefined;
     var parejasTotales= cartasTotales / 2;
 
+    if (typeof(Storage) !== "undefined")
+    {
+        if (localStorage.WonGames==undefined)
+        {
+            localStorage.setItem("WonGames", 0)
+            // locaStorage.WonGames = 0
+        }
+    }
+    else
+    {
+        alert("version del navegador no compatible con la aplicacion")
+    }
     //gira las cartas y comprueba si son pareja
     function girar() 
     {
@@ -29,12 +41,13 @@ window.onload = function()
             {
                 parejasTotales--;
                 if (parejasTotales <=0){
-                    alert("Has ganado");
+                    localStorage.WonGames++;
+                    if (localStorage.WonGames > 0)
+                    alert("Has ganado" +localStorage.WonGames+ " partida/s");
                     reiniciar();
                 }
             }
             else{
-                alert("holas")
                 ocultarCarta(carta1);
                 ocultarCarta(carta2);
             }
@@ -78,6 +91,13 @@ window.onload = function()
             }
         })
     }
+
+    function reiniciarPuntos()
+    {
+        localStorage.WonGames = 0
+    }
+
     reiniciar()
     document.getElementById("rest_button").onclick = reiniciar
+    document.getElementById("rest_points").onclick = reiniciarPuntos
 }
