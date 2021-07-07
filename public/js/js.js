@@ -5,6 +5,9 @@ window.onload = function()
     var carta2= undefined;
     var parejasTotales= cartasTotales / 2;
 
+    var modal = document.getElementById("modal")
+    var puntuacionHtml = document.getElementById("mensaje_puntuacion")
+
     if (typeof(Storage) !== "undefined")
     {
         if (localStorage.WonGames==undefined)
@@ -31,31 +34,44 @@ window.onload = function()
             carta2 = element
         }
         element.classList.remove("oculto");
+        // sleep(1000).then(() => 
+        // {
 
-        //si son pareja...
-        if (!(carta1 == undefined) && !(carta2 == undefined) && !(carta1===carta2)){
-            // if ((carta1.classList.contains("rojo") && carta2.classList.contains("rojo"))
-            // ||
-            // (carta1.classList.contains("verde") && carta2.classList.contains("verde"))){
-            if (carta1.classList.toLocaleString() == carta2.classList.toLocaleString())
-            {
-                parejasTotales--;
-                if (parejasTotales <=0){
-                    localStorage.WonGames++;
-                    if (localStorage.WonGames > 0)
-                    alert("Has ganado" +localStorage.WonGames+ " partida/s");
-                    reiniciar();
+    
+            //si son pareja...
+            if (!(carta1 == undefined) && !(carta2 == undefined) && !(carta1===carta2)){
+                // if ((carta1.classList.contains("rojo") && carta2.classList.contains("rojo"))
+                // ||
+                // (carta1.classList.contains("verde") && carta2.classList.contains("verde"))){
+                if (carta1.classList.toLocaleString() == carta2.classList.toLocaleString())
+                {
+                    parejasTotales--;
+                    if (parejasTotales <=0){
+                        
+                        localStorage.WonGames++;
+                        var msg = "Has ganado " +localStorage.WonGames+ " partida"
+                        if (localStorage.WonGames > 1) msg = msg + "s";
+                        
+                        puntuacionHtml.innerText = msg
+                        modal.style.display = "block"
+
+                        sleep(1000).then(() => 
+                        {               
+                            reiniciar();
+                        })
+                    }
                 }
-            }
-            else{
-                ocultarCarta(carta1);
-                ocultarCarta(carta2);
+                else{
+                    ocultarCarta(carta1);
+                    ocultarCarta(carta2);
+                }
+
+                carta1 = undefined;
+                carta2 = undefined;
+                
             }
 
-            carta1 = undefined;
-            carta2 = undefined;
-            
-        }
+        // });
     }
 
     function ocultarCarta(carta) 
@@ -97,7 +113,19 @@ window.onload = function()
         localStorage.WonGames = 0
     }
 
+    //copia pega-->
+
+    // sleep time expects milliseconds
+    function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+  //<-- fin copia pega
+
     reiniciar()
     document.getElementById("rest_button").onclick = reiniciar
     document.getElementById("rest_points").onclick = reiniciarPuntos
+    modal.onclick = function () {
+        modal.style.display = "none"
+    }
 }
