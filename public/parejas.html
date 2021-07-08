@@ -1,0 +1,37 @@
+<hmtl>
+	<head>
+		<charset text ="utf-8">
+        <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/heroes/"> -->
+        <!-- <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+        <!-- <link href="https://getbootstrap.com/docs/5.0/examples/heroes/heroes.css" rel="stylesheet"> -->
+		<link rel="stylesheet" href="/css/css.css">
+        <script src="./js/js.js"></script>
+	</head>
+	<body>
+        <h1>Juego de las parejas</h1>
+        <p>Empareja cada carta con aquella que sea igual</p>
+        <div class="linea">
+            <div type"button" class="cuadro btn btn-primary oculto" id="carta1">
+            </div>
+            <div type"button" class="cuadro btn btn-primary oculto" id="carta2">
+            </div>
+        </div>
+        <div class="linea">
+            <div type"button" class="cuadro btn btn-primary oculto" id="carta3">
+            </div>
+            <div type"button" class="cuadro btn btn-primary oculto" id="carta4">
+            </div>
+        </div>
+        <div class="linea">
+            <div type="button" class=" btn btn-primary reset" id="rest_button"><span>Barajar</span>
+            </div>
+            <div type="button" class=" btn btn-primary reset" id="rest_points">Reiniciar
+            </div>
+        </div>
+        <!-- pop up-->
+        <div class="modal" id="modal">
+            <div type="button" class="btn btn-primary modal"><span id="mensaje_puntuacion"></span>
+            </div>
+        </div>
+    </body>
+</html>
