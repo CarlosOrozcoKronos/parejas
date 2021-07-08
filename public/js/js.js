@@ -1,19 +1,21 @@
 window.onload = function() 
 {
     const cartasTotales= 4;
-    var carta1= undefined;
-    var carta2= undefined;
-    var parejasTotales= cartasTotales / 2;
+    let cartaVar1= undefined;
+    let cartaVar2= undefined;
+    let parejasTotales= cartasTotales / 2;
+    let timer = 1000;
 
-    var modal = document.getElementById("modal")
-    var puntuacionHtml = document.getElementById("mensaje_puntuacion")
+    let modal = document.getElementById("modal")
+    let puntuacionHtml = document.getElementById("mensaje_puntuacion")
+
+    let mis_cartas = Array.from(document.getElementsByClassName('cuadro'))
 
     if (typeof(Storage) !== "undefined")
     {
         if (localStorage.WonGames==undefined)
         {
             localStorage.setItem("WonGames", 0)
-            // locaStorage.WonGames = 0
         }
     }
     else
@@ -25,53 +27,80 @@ window.onload = function()
     {
         let element = document.getElementById(event.target.id);
 
-        if (carta1 == undefined)
+        let switch_click_off = mis_cartas.forEach((cuadro, i) => 
         {
-            carta1 = element
-        }
-        else if (carta2 == undefined)
-        {
-            carta2 = element
-        }
-        element.classList.remove("oculto");
-        // sleep(1000).then(() => 
-        // {
+            cuadro.onclick = function()
+            {
+                return false
+            }
+        })
 
+        if (cartaVar1 == undefined)
+        {
+            cartaVar1 = element
+            element.classList.remove("oculto");
+        }
+        else if (cartaVar2 == undefined && !(cartaVar1 === element))
+        {
+            cartaVar2 = element
+            element.classList.remove("oculto");
+        }
+        
+        
+        setTimeout(() => {
+            
+        
     
             //si son pareja...
-            if (!(carta1 == undefined) && !(carta2 == undefined) && !(carta1===carta2)){
-                // if ((carta1.classList.contains("rojo") && carta2.classList.contains("rojo"))
-                // ||
-                // (carta1.classList.contains("verde") && carta2.classList.contains("verde"))){
-                if (carta1.classList.toLocaleString() == carta2.classList.toLocaleString())
+            if (!(cartaVar1 == undefined) && !(cartaVar2 == undefined) && !(cartaVar1===cartaVar2)){
+                if (!(cartaVar1.classList.contains("done") || (cartaVar2.classList.contains("done"))))
                 {
-                    parejasTotales--;
-                    if (parejasTotales <=0){
-                        
-                        localStorage.WonGames++;
-                        var msg = "Has ganado " +localStorage.WonGames+ " partida"
-                        if (localStorage.WonGames > 1) msg = msg + "s";
-                        
-                        puntuacionHtml.innerText = msg
-                        modal.style.display = "block"
+                    if (cartaVar1.classList.toLocaleString() == cartaVar2.classList.toLocaleString())
+                    {
+                        cartaVar1.classList.add("done")
+                        cartaVar2.classList.add("done")
+                        parejasTotales--;
+                        if (parejasTotales <=0){
+                            
+                            localStorage.WonGames++;
+                            var msg = "Has ganado " +localStorage.WonGames+ " partida"
+                            if (localStorage.WonGames > 1) msg = msg + "s";
+                            
+                            puntuacionHtml.innerText = msg
+                            modal.style.display = "flex"
 
-                        sleep(1000).then(() => 
-                        {               
-                            reiniciar();
-                        })
+                            console.log(msg)
+
+                            sleep(1000).then(() => 
+                            {               
+                                reiniciar();
+                            })
+                            sleep(timer).then(() => 
+                            {               
+                                // modal.style.display = "none"
+                            })
+                        }
+                    }
+                    else{
+                        ocultarCarta(cartaVar1);
+                        ocultarCarta(cartaVar2);
                     }
                 }
-                else{
-                    ocultarCarta(carta1);
-                    ocultarCarta(carta2);
-                }
 
-                carta1 = undefined;
-                carta2 = undefined;
-                
+                cartaVar1 = undefined;
+                cartaVar2 = undefined;
             }
 
-        // });
+        }, timer);
+
+        let switch_click_on = mis_cartas.forEach((cuadro, i) => 
+        {
+            if (!cuadro.classList.contains("done"))
+            cuadro.onclick = function()
+            {
+                girar()
+            }
+        })
     }
 
     function ocultarCarta(carta) 
@@ -83,13 +112,15 @@ window.onload = function()
     {
 
         parejasTotales= cartasTotales / 2;
-        let lista = Array.from({length: cartasTotales}, (x,i) => i++ ); //[1, 2, 3, 4];
+        cartaVar1 = undefined
+        cartaVar2 = undefined
+        let lista = Array.from({length: cartasTotales}, (x,i) => i++ ); //[0, 1, 2, 3];
         aleatorios = Array.from({length: cartasTotales/2}, aleatorio => {
             aleatorioTemp = Math.floor(Math.random() * lista.length)
             return lista.splice(aleatorioTemp ,1)[0]
         })
 
-        let cartas = Array.from(document.getElementsByClassName('cuadro')).forEach((cuadro, i) => 
+        let cartas = mis_cartas.forEach((cuadro, i) => 
         {
             if (aleatorios.includes(i))
             {
@@ -102,6 +133,7 @@ window.onload = function()
                 cuadro.classList.remove("rojo")
             }
             cuadro.classList.add("oculto")
+            cuadro.classList.remove("done")
             cuadro.onclick = function(){
                 girar()
             }
